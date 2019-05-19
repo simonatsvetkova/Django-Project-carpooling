@@ -29,7 +29,8 @@ ALLOWED_HOSTS = []
 
 # AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-# AUTH_USER_MODEL = 'auth.User'
+# AUTH_USER_MODEL = 'accounts.ProfileUser'
+# ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.RegistrationForm'
 
 # Application definition
 
