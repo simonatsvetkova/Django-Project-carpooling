@@ -1,4 +1,4 @@
-"""django_blog URL Configuration
+"""carpooling URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,15 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-from .views import home_page, about_page, contact_page
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_page),
-    path('about/', about_page),
-    path('contact/', contact_page)
-
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    # path('common/', include('common.urls')),
+    path('carpool/', include('carpool.urls')),
 
 ]
