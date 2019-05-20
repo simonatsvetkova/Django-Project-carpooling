@@ -7,17 +7,14 @@ from .models import ProfileUser
 
 
 class RegistrationForm(UserCreationForm):
-    # username = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True, max_length=30)
     last_name = forms.CharField(required=True, max_length=30)
 
-    # password1 = forms.CharField(required=True)
-    # password2 = forms.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+        fields = ("first_name", "last_name",  "email", "username","password1", "password2")
 
         # def clean_username(self):
         #     username = self.cleaned_data["username"]
@@ -26,6 +23,15 @@ class RegistrationForm(UserCreationForm):
         #     except ProfileUser.DoesNotExist:
         #         return username
         #     raise forms.ValidationError(self.error_messages['duplicate_username'])
+
+    # checks if email is already used and returns message if it's not unique
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        print(User.objects.filter(email=email).count())
+        if email and User.objects.filter(email=email).count() > 0:
+            raise forms.ValidationError(f'This email address is already registered.')
+        return email
 
     def save(self, commit=True):
         if not commit:
@@ -38,17 +44,4 @@ class RegistrationForm(UserCreationForm):
         user.is_staff = True
         user.save()
 
-        # if commit:
-        #     user.save()
         return user
-
-    # def save(self, commit=True):
-    #     user = User.objects.create_user(
-    #         self.cleaned_data['username'],
-    #         self.cleaned_data['email'],
-    #         self.cleaned_data["first_name"],
-    #         self.cleaned_data["last_name"],
-    #         self.cleaned_data['password1']
-    #     )
-    #     user.is_active = True
-    #     return user
