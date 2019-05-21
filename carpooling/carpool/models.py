@@ -1,16 +1,30 @@
 import calendar
+import csv
 
 from django.db import models
 from django.core.validators import MinValueValidator
 
 from accounts.models import ProfileUser
 
+# from .db_tables import DISTRICTS
+
 
 # Create your models here.
 
+CSV_PATH = 'carpool/Sofia_districts.csv'      # Csv file path
+# flat_list = []
+
+with open(CSV_PATH, newline='') as csvfile:
+    rows = csv.reader(csvfile, delimiter=',', quotechar=';')
+    districts = list(rows)
+    flat_list = [item for sublist in districts[1:] for item in sublist]
+    print(flat_list)
+
+
 
 class Offer(models.Model):
-    # get list of day's names from the default python calendar
+    DISTRICTS = [(dist, dist) for dist in flat_list]
+    # get list of day's names from the default python calendar as tuple
     REGULARITY = [(str(i), calendar.day_name[i]) for i in range(0,7)]
     TYPE_OF_CONTACT = (
         ('E', 'email'),
@@ -21,7 +35,7 @@ class Offer(models.Model):
     user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     # ride_id = 'id - check if you can get it'  # to call it directly in the form, here it'll be automatically created anyways
     driver = models.CharField(max_length=70, blank=False, null=False, default='full_name')
-    start_location = models.CharField(max_length=50, default='choose start location')
+    start_location = models.CharField(max_length=50, default='choose start location', choices=DISTRICTS)
     destination = models.CharField(max_length=50, default='KBC')
     departure_time = models.TimeField(default='7:00')
     return_time = models.TimeField(default='18:00')
@@ -29,12 +43,14 @@ class Offer(models.Model):
     regularity = models.CharField(max_length=15, choices=REGULARITY, default='__all__')
     type_of_contact = models.CharField(max_length=2, choices=TYPE_OF_CONTACT, default='PH')
     number_of_seats = models.CharField(max_length=1, choices=NUMBER_OF_SEATS, default=1)
+    car_picture = models.ImageField(upload_to='images/', default='https://media-dmg.assets-cdk.com/websites/5.0-4142/websitesEar/websitesWebApp/css/common/images/en_US/noImage_large.png')
     passengers = models.CharField(max_length=70, null=True, default='full_name')
     terms_and_conditions = models.BooleanField(default=False, blank=False)
 
     def __str__(self):
         return f"{self.pk} - {self.driver}"
 
+# https://automotivegroup.co.uk/wp-content/themes/automotive/library/images/z-car-default-ftdimg.jpg
 
 class SeatRequest(models.Model):
     user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)

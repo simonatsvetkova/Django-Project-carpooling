@@ -35,7 +35,7 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         if not commit:
-            raise NotImplementedError("Can't create User and UserProfile without database save")
+            raise NotImplementedError("Can't create User")
         user = super(RegistrationForm, self).save(commit=True)
         user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]

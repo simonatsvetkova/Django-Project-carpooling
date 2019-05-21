@@ -24,12 +24,14 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Furniture
+                    Offers
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="">All</a>
                     <a class="dropdown-item" href="">Create</a>
-                    <a class="dropdown-item" href="">My furniture</a>
+                    <a class="dropdown-item" href="">My offers</a>
+                    <a class="dropdown-item" href="">My requests</a>
+
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -39,7 +41,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     {% if user.is_superuser %}
-                    <a class="dropdown-item" href="/gotoaddmaterila">Add material</a>
+                    <a class="dropdown-item" href="/gotoaddmaterila">Add offer</a>
                     {% endif %}
                     <a class="dropdown-item" href="#">Profile</a>
                     <a class="dropdown-item" href="{% url 'logout' %}?next=/accounts/login/">Logout</a>

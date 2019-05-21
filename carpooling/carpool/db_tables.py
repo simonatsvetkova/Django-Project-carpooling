@@ -22,10 +22,14 @@
 import csv
 
 
-CSV_PATH = '/carpool/static/files/Sofia_districts.csv'      # Csv file path
+CSV_PATH = 'Sofia_districts.csv'      # Csv file path
 
 
-with open(CSV_PATH, newline='') as csvfile:
+with open(CSV_PATH, 'r') as csvfile:
     rows = csv.reader(csvfile, delimiter=',', quotechar=';')
     districts = list(rows)
-    print('A')
+    flat_list = [item for sublist in districts[1:] for item in sublist]
+    print(flat_list)
+    DISTRICTS = [(dist, dist) for dist in flat_list]
+    print(DISTRICTS)
+
