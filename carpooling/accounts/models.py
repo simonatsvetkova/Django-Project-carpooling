@@ -11,8 +11,9 @@ class ProfileUser(models.Model):
     # USERNAME_FIELD = 'username'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    # username = User.username
-    # profile_picture = models.URLField(default='https://upload.wikimedia.org/wikipedia/common/7/72/Default-welcomer.png')
+    email = models.EmailField()
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     profile_picture = models.ImageField(upload_to='images/', default='https://upload.wikimedia.org/wikipedia/common/7/72/Default-welcomer.png')
 
     def __str__(self):

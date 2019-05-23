@@ -35,7 +35,8 @@ class Offer(models.Model):
 
     user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     # ride_id = 'id - check if you can get it'  # to call it directly in the form, here it'll be automatically created anyways
-    driver = models.CharField(max_length=70, blank=False, null=False, default='full_name')
+    # driver = models.CharField(max_length=70, blank=False, null=False, default='full_name')
+    driver = models.CharField(max_length=70, default=f"{ProfileUser.first_name} {ProfileUser.last_name}")
     start_location = models.CharField(max_length=50, default='choose start location', choices=DISTRICTS)
     destination = models.CharField(max_length=50, default='KBC')
     departure_time = models.TimeField(default='7:00')
@@ -67,8 +68,8 @@ class SeatRequest(models.Model):
 
 class SeatApprovalRejection(models.Model):
     DECISION = [
-        (1, 'Approve'),
-        (0, 'Reject')
+        ('1', 'Approve'),
+        ('0', 'Reject')
     ]
 
     user = models.ForeignKey(SeatRequest, on_delete=models.CASCADE)
