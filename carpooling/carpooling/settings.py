@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'multiselectfield',
+
     'accounts',
     # 'accounts.apps.UserConfig',
     'common',
@@ -130,8 +132,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATIC_URL = '/static/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
-MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+# MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
 
 MEDIA_URL = '/media/'

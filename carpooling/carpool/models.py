@@ -24,13 +24,14 @@ with open(CSV_PATH, newline='') as csvfile:
 
 class Offer(models.Model):
     DISTRICTS = [(dist, dist) for dist in flat_list]
+
     # get list of day's names from the default python calendar as tuple
-    REGULARITY = [(str(i), calendar.day_name[i]) for i in range(0,7)]
+    REGULARITY = [(str(i), str(calendar.day_name[i])) for i in range(0,7)]
     TYPE_OF_CONTACT = (
         ('E', 'email'),
         ('PH', 'phone')
     )
-    NUMBER_OF_SEATS = [(i, int(i)) for i in range(1, 7)]
+    NUMBER_OF_SEATS = [(i, i) for i in range(1, 7)]
 
     user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     # ride_id = 'id - check if you can get it'  # to call it directly in the form, here it'll be automatically created anyways
@@ -40,9 +41,9 @@ class Offer(models.Model):
     departure_time = models.TimeField(default='7:00')
     return_time = models.TimeField(default='18:00')
     route = models.TextField(max_length=400, blank=True)
-    regularity = models.CharField(max_length=15, choices=REGULARITY, default='__all__')
+    regularity = models.CharField(max_length=1, choices=REGULARITY, default='1')
     type_of_contact = models.CharField(max_length=2, choices=TYPE_OF_CONTACT, default='PH')
-    number_of_seats = models.CharField(max_length=1, choices=NUMBER_OF_SEATS, default=1)
+    number_of_seats = models.IntegerField(choices=NUMBER_OF_SEATS, default=1)
     car_picture = models.ImageField(upload_to='images/', default='https://media-dmg.assets-cdk.com/websites/5.0-4142/websitesEar/websitesWebApp/css/common/images/en_US/noImage_large.png')
     passengers = models.CharField(max_length=70, null=True, default='full_name')
     terms_and_conditions = models.BooleanField(default=False, blank=False)

@@ -1,5 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
+from django.shortcuts import render
 
 from .models import Offer, SeatRequest, SeatApprovalRejection
 
@@ -11,12 +12,10 @@ class CreateOfferForm(forms.ModelForm):
     select_seats = Offer.NUMBER_OF_SEATS
     select_contact = Offer.TYPE_OF_CONTACT
 
-    ride_id = forms.ModelChoiceField(required=True, queryset=Offer.objects.values_list('pk'), widget=forms.NumberInput(attrs={
+
+    driver = forms.CharField(widget=forms.Select(attrs={
         'class': 'form-control'
     }))
-    # driver = forms.CharField( widget=forms.Select(attrs={
-    #     'class': 'form-control'
-    # }))
     start_location = forms.ChoiceField(choices=select_districts,
                              widget=forms.Select(
                                  attrs={
@@ -48,6 +47,8 @@ class CreateOfferForm(forms.ModelForm):
                                  }
                              ))
 
+
+
     type_of_contact = forms.ChoiceField(choices=select_contact,
                              widget=forms.Select(
                                  attrs={
@@ -66,7 +67,33 @@ class CreateOfferForm(forms.ModelForm):
 
     terms_and_conditions = forms.BooleanField()
 
+    # def __init__(self, *args, **kwargs):
+    #     self.request = kwargs.pop('request', None)
+    #     super(CreateOfferForm, self).__init__(*args, **kwargs)
+    #     # self.fields['regularity'] = forms.ModelChoiceField(queryset=Offer.objects.values('regularity'), widget=forms.SelectMultiple)
+    #     for name, field in self.fields.items():
+    #         attr = {'class': 'form-control'}
+    #         if field.label:
+    #             attr['placeholder'] = field.label
+    #         field.widget.attrs.update(attr)
+
 
     class Meta:
         model = Offer
-        fields = '__all__'
+        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity', 'type_of_contact', 'number_of_seats', 'passenger', 'terms_and_conditions']
+        exclude = ['driver',]
+        # widgets = {
+        #     'driver': settings.AUTH_USER_MODEL
+        # }
+
+
+
+def form_valid(self, form):
+    form.instance.driver = self.request.user
+    return super(CreateOfferForm, self).form_valid(form)
+
+
+class RequestRideForm(forms.ModelForm):
+    ride_id = forms.ModelChoiceField(required=True, queryset=Offer.objects.values_list('pk', flat=True), widget=forms.Select(attrs={
+        'class': 'form-control'
+    }))
