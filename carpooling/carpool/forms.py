@@ -13,9 +13,9 @@ class CreateOfferForm(forms.ModelForm):
     select_contact = Offer.TYPE_OF_CONTACT
 
 
-    driver = forms.CharField(widget=forms.Select(attrs={
-        'class': 'form-control'
-    }))
+    # driver = forms.CharField(widget=forms.Select(attrs={
+    #     'class': 'form-control'
+    # }))
     start_location = forms.ChoiceField(choices=select_districts,
                              widget=forms.Select(
                                  attrs={
@@ -41,11 +41,14 @@ class CreateOfferForm(forms.ModelForm):
     route = forms.CharField(max_length=400, widget=forms.TextInput(attrs={
         'class': 'form-control'
     }))
-    regularity = forms.MultipleChoiceField(choices=select_regularity,widget=forms.SelectMultiple(
-                                 attrs={
-                                     'class': 'form-control'
-                                 }
-                             ))
+    # regularity = forms.MultipleChoiceField(choices=select_regularity,widget=forms.SelectMultiple(
+    #                              attrs={
+    #                                  'class': 'form-control'
+    #                              }
+    #                          ))
+    regularity = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+        queryset = Offer.objects.only('regularity'))
 
 
 
@@ -81,16 +84,19 @@ class CreateOfferForm(forms.ModelForm):
     class Meta:
         model = Offer
         fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity', 'type_of_contact', 'number_of_seats', 'passenger', 'terms_and_conditions']
-        exclude = ['driver',]
+        exclude = ['user', ]
         # widgets = {
         #     'driver': settings.AUTH_USER_MODEL
         # }
+     #
+    def __init__(self, user, *args, **kwargs):
+        super(CreateOfferForm, self).__init__(*args, **kwargs)
+        self.fields['regularity'].choices = [(str(item.id), str(item)) for item in Offer.objects.only('regularity')]
 
 
-
-def form_valid(self, form):
-    form.instance.driver = self.request.user
-    return super(CreateOfferForm, self).form_valid(form)
+# def form_valid(self, form):
+#     form.instance.driver = self.request.user
+#     return super(CreateOfferForm, self).form_valid(form)
 
 
 class RequestRideForm(forms.ModelForm):

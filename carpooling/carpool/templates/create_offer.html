@@ -11,7 +11,7 @@
         <form style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%" method="post" action="{% url 'create-offer' %}">
             <h2>Create Offer</h2>
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_table }}
             <button class="btn btn-primary" type="submit">Submit</button>
 
         </form>
