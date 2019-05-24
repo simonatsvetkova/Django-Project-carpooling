@@ -14,8 +14,8 @@ from .forms import RegistrationForm
 # Create your views here.
 
 def redirect_user(request):
-    url = f'/offers/'
-    return HttpResponseRedirect(url)
+    url = f'carpool:my-offers-list'
+    return redirect(url)
 
 
 class UserDetail(generic.DetailView):
