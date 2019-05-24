@@ -12,6 +12,11 @@ urlpatterns = [
     re_path('^offerdetails/(?P<pk>\d+)/$', views.OfferDetailView.as_view(), name='offer-details'),
     re_path('^delete/(?P<pk>\d+)/$', views.OfferDeleteView.as_view(), name='offer-delete'),
     re_path('^edit/(?P<pk>\d+)/$', views.OfferEditView.as_view(), name='offer-edit'),
-    re_path('^request/(?P<pk>\d+)/$', views.RequestRideView.as_view(), name='request-ride'),
+    path('request/', views.RequestRideView.as_view(), name='request-ride'),
+    re_path('^myrequests/(?P<pk>\d+)/$', views.MyRequestsView.as_view(), name='my-requests'),
+    path('myrequests/', views.MyRequestsView.as_view(), name='my-requests-list'),
+    re_path('^requestdetails/(?P<pk>\d+)/$', views.RequestDetailView.as_view(), name='request-details'),
+    re_path('^requestdelete/(?P<pk>\d+)/$', views.RequestDeleteView.as_view(), name='request-delete'),
+    path('allrequests', views.AllRequestsView.as_view(), name='all-requests'),
 
 ]

@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from accounts.models import ProfileUser
 from .models import Offer, SeatRequest, SeatApprovalRejection
-from .forms import CreateOfferForm
+from .forms import CreateOfferForm, RequestRideForm
 
 
 # Create your views here.
@@ -120,8 +120,8 @@ class OfferDeleteView(LoginRequiredMixin, generic.DeleteView):
     def post(self, request, pk):
         if not has_access_to_modify(self.request.user, self.get_object()):
             return render(request, 'permission_denied.html')
-        furniture = self.get_object()
-        furniture.delete()
+        offer = self.get_object()
+        offer.delete()
         return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
 
 
@@ -145,4 +145,89 @@ class OfferEditView(LoginRequiredMixin, generic.UpdateView):
 
 
 class RequestRideView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = SeatRequest
+    form_class = RequestRideForm
+    template_name = 'request_ride.html'
+    success_url = reverse_lazy('carpool:my-requests-list')
+
+    # def form_valid(self, form):
+    #     user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
+    #     form.instance.user = user
+    #     return super().form_valid(form)
+
+
+    def post(self, request, *args, **kwargs):
+        form = RequestRideForm(request.POST)
+        if form.is_valid():
+            ride_request = form.save(commit=False)
+            ride_request.user = ProfileUser.objects.get(user=request.user)
+            ride_request.save()
+            return HttpResponseRedirect(reverse_lazy('carpool:my-requests-list'))
+        return render(request, 'request_ride.html', {'form': form})
+
+
+
+
+class MyRequestsView(LoginRequiredMixin, generic.ListView):
+    model = SeatRequest
+    template_name = 'my_requests.html'
+    context_object_name = 'request'
+
+    def get_queryset(self):
+        profile_user = ProfileUser.objects.all().filter(user__pk=self.request.user.id).first()
+        offers = SeatRequest.objects.all().filter(user=profile_user)
+        if offers:
+            return offers
+        return []
+
+
+class AllRequestsView(LoginRequiredMixin, generic.ListView):
+    model = SeatRequest
+    template_name = 'all_requests.html'
+    context_object_name = 'requests'
+
+    def get_queryset(self):
+        requests = SeatRequest.objects.all()
+        if requests:
+            return requests
+        return []
+
+
+
+class RequestDetailView(LoginRequiredMixin, generic.DetailView):
+    model = SeatRequest
+    login_url = 'accounts/login/'
+    context_object_name = 'requests'
+    template_name = 'request_details.html'
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(RequestDetailView, self).get_context_data(**kwargs)
+        # context['reviews'] = Review.objects.all().filter(offer=self.get_object())
+
+        if has_access_to_modify(self.request.user, self.get_object()):
+            context['is_user_offer'] = True
+        else:
+            context['is_user_offer'] = False
+
+        return context
+
+
+
+class RequestDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = SeatRequest
+    login_url = 'accounts/login/'
+    template_name = 'request_delete.html'
+    success_url = reverse_lazy('carpool:my-requests-list')
+
+    def get(self, request, pk):
+        if has_access_to_modify(self.request.user, self.get_object()):
+            return render(request, 'request_delete.html', {'requests': self.get_object()})
+        return render(request, 'permission_denied.html')
+
+    def post(self, request, pk):
+        if not has_access_to_modify(self.request.user, self.get_object()):
+            return render(request, 'permission_denied.html')
+        ride_request = self.get_object()
+        ride_request.delete()
+        return HttpResponseRedirect(reverse_lazy('carpool:my-requests-list'))
+

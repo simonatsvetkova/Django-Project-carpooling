@@ -81,7 +81,7 @@ class CreateOfferForm(forms.ModelForm):
 
     class Meta:
         model = Offer
-        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity',   'type_of_contact', 'number_of_seats', 'passenger', 'terms_and_conditions']
+        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity','type_of_contact', 'number_of_seats', 'passenger', 'terms_and_conditions']
         # exclude = ['user', ]
         # widgets = {
         #     'driver': settings.AUTH_USER_MODEL
@@ -91,6 +91,7 @@ class CreateOfferForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateOfferForm, self).__init__(*args, **kwargs)
         self.fields['regularity'].widget = forms.CheckboxSelectMultiple(choices=Offer.REGULARITY)
+
     #
     # def save(self, commit=True):
     #     if not commit:
@@ -100,7 +101,6 @@ class CreateOfferForm(forms.ModelForm):
     #
     #     return offer
 
-
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.owner = self.request.user
@@ -109,12 +109,29 @@ class CreateOfferForm(forms.ModelForm):
 
 
 class RequestRideForm(forms.ModelForm):
-    ride_id = forms.ModelChoiceField(required=True, queryset=Offer.objects.values_list('pk', flat=True),
+
+    ride_id = forms.ModelChoiceField(queryset=Offer.objects.all(),
                                      widget=forms.Select(attrs={
                                          'class': 'form-control'
                                      }))
-
+    driver = forms.ModelChoiceField(queryset=Offer.objects.all(),
+                                     widget=forms.Select(attrs={
+                                         'class': 'form-control'
+                                     }))
+    comments = forms.CharField(max_length=400, required=False, widget=forms.TextInput(
+        attrs={
+            'class': 'form-control'
+        }
+    ))
+    terms_and_conditions = forms.BooleanField()
 
     class Meta:
-        model= SeatRequest
-        fields = '__all__'
+        model = SeatRequest
+        fields = ['ride_id', 'driver', 'comments', 'terms_and_conditions']
+        exclude = ['passenger']
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['ride_id'].queryset = Offer.objects.none()
+
