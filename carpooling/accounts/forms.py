@@ -10,11 +10,12 @@ class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True, max_length=30)
     last_name = forms.CharField(required=True, max_length=30)
+    profile_picture = forms.ImageField(required=False, label='Upload profile picture')
 
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name",  "email", "username","password1", "password2")
+        fields = ["profile_picture", "first_name", "last_name",  "email", "username","password1", "password2"]
 
         # def clean_username(self):
         #     username = self.cleaned_data["username"]
@@ -27,6 +28,7 @@ class RegistrationForm(UserCreationForm):
     # checks if email is already used and returns message if it's not unique
     def clean_email(self):
         email = self.cleaned_data.get('email')
+
         username = self.cleaned_data.get('username')
         print(User.objects.filter(email=email).count())
         if email and User.objects.filter(email=email).count() > 0:
@@ -40,6 +42,7 @@ class RegistrationForm(UserCreationForm):
         user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
+        user.profile_picture = self.cleaned_data['profile_picture']
         user.is_active = True
         user.is_staff = True
         user.save()

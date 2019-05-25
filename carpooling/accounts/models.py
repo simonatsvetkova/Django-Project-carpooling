@@ -14,17 +14,17 @@ class ProfileUser(models.Model):
     email = models.EmailField()
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    profile_picture = models.ImageField(upload_to='images/', default='https://upload.wikimedia.org/wikipedia/common/7/72/Default-welcomer.png')
+    profile_picture = models.ImageField(upload_to='images/', default='images/default_avatar.jpg', null=True, blank=True)
 
     def __str__(self):
         return f"{self.user}"
 
 # this saves the user in both groups User (the default Django group) and the ProfileUser group
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, *args, **kwargs):
-    if not created:
-        return
-    ProfileUser.objects.create(user=instance)
+    @receiver(post_save, sender=User)
+    def create_or_update_user_profile(sender, instance, created, *args, **kwargs):
+        if not created:
+            return
+        ProfileUser.objects.create(user=instance)
 
 
-post_save.connect(create_or_update_user_profile, sender=User)
+    post_save.connect(create_or_update_user_profile, sender=User)
