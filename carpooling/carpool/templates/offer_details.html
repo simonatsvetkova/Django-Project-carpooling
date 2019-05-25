@@ -24,7 +24,7 @@
                             <a href="{% url 'carpool:offer-edit' offers.id %}" class="btn btn-success">Edit</a>
                             <a href="{% url 'carpool:offer-delete' offers.id %}" class="btn btn-danger">Delete</a>
                             {% else %}
-                            <a href="{% url 'carpool:request-ride' offers.id %}" class="btn btn-success">Request</a>
+                            <a href="{% url 'carpool:request-ride' %}" class="btn btn-success">Request</a>
 
                         {% endif %}
 

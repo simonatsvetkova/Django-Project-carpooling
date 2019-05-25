@@ -62,7 +62,7 @@ class Offer(models.Model):
     terms_and_conditions = models.BooleanField(default=False, blank=False)
 
     def __str__(self):
-        return f"Offer ID {self.pk} with driver {self.user}"
+        return f"Offer ID {self.id} with driver {self.user}"
 
 #
 # @receiver(post_save, sender=ProfileUser)
@@ -83,12 +83,11 @@ class Offer(models.Model):
 # https://automotivegroup.co.uk/wp-content/themes/automotive/library/images/z-car-default-ftdimg.jpg
 
 class SeatRequest(models.Model):
-    user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
-    offer = models.ManyToManyField(Offer)
+    user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE, unique=False)
+    # offer = models.ForeignKey(Offer, on_delete=models.CASCADE, default=1, unique=False)
     passenger = models.CharField(max_length=70, blank=False, null=False, default='full_name')
-    ride_id = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='pk')  # check if you can link it to Offer.pk in the form and make it a
-    # drop-down menu
-    driver = models.CharField(max_length=70, default=f'{user}', blank=False, null=False)  # check if you can make it to auto-populate once a ride_id is selected
+    ride_id = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='pk', unique=False, default=1)
+    driver = MultiSelectField(max_choices=1, default=f'{user}', blank=False, null=False)  # check if you can make it to auto-populate once a ride_id is selected
     comments = models.TextField(max_length=400, blank=True)
     terms_and_conditions = models.BooleanField(default=False, blank=False)
 

@@ -14,7 +14,7 @@ from .forms import CreateOfferForm, RequestRideForm
 # Create your views here.
 
 def has_access_to_modify(current_user, current_obj):
-    profile_user = ProfileUser.objects.all().filter(user__pk=current_user.id)[0]
+    profile_user = ProfileUser.objects.all().filter(user__pk=current_user.id).first()
 
     if current_obj.user == profile_user or current_user.is_superuser:
         return True
@@ -37,7 +37,7 @@ class CreateOfferView(LoginRequiredMixin, generic.CreateView):
     template_name = 'create_offer.html'
 
     def form_valid(self, form):
-        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
+        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id).first()
         form.instance.user = user
         return super().form_valid(form)
 
@@ -120,8 +120,12 @@ class OfferDeleteView(LoginRequiredMixin, generic.DeleteView):
     def post(self, request, pk):
         if not has_access_to_modify(self.request.user, self.get_object()):
             return render(request, 'permission_denied.html')
-        offer = self.get_object()
-        offer.delete()
+        try:
+            offer = Offer.objects.get(pk=pk)
+            # offer = self.get_object()
+            offer.delete()
+        except Exception as error:
+            print(f"cant delete --> {error}")
         return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
 
 
@@ -132,7 +136,7 @@ class OfferEditView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy('carpool:my-offers-list')
 
     def form_valid(self, form):
-        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
+        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id).first()
         form.instance.user = user
         return super().form_valid(form)
 
@@ -149,11 +153,6 @@ class RequestRideView(LoginRequiredMixin, generic.CreateView):
     form_class = RequestRideForm
     template_name = 'request_ride.html'
     success_url = reverse_lazy('carpool:my-requests-list')
-
-    # def form_valid(self, form):
-    #     user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
-    #     form.instance.user = user
-    #     return super().form_valid(form)
 
 
     def post(self, request, *args, **kwargs):

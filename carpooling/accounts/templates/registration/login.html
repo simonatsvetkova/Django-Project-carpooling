@@ -10,13 +10,17 @@
     </div>
     <div class="col-lg-6">
         <form style="border: 1px solid grey; margin: 0% 0%; padding: 10% 5%" method="post">
+             <div class="form-group">
             <h2>Login</h2>
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
             <br>
             <br>
-            <span>New to Carpooling?<a style="color:orange" href="{% url 'accounts:signup' %}"> Create an account</a></span>
+            <p class="block">New to Carpooling?<a style="color:orange" href="{% url 'accounts:signup' %}"> Create an account</a></p>
+            <p class="block">Forgot Password?<a style="color:orange" href="{% url 'accounts:password_reset' %}">Click here</a></p>
+             </div>
+
         </form>
     </div>
 </div>

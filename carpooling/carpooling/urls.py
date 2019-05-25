@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 from . import settings
+
+from common import views
+
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -28,6 +31,7 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),
     # path('common/', include('common.urls')),
     path('carpool/', include('carpool.urls')),
+    path('', views.get_landing_page, name='home'),
 
 ]
 
