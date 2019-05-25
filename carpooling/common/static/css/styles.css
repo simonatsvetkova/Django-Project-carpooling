@@ -1,0 +1,64 @@
+div header img {
+    width: 100%;
+    text-align: center;
+    align-content: center;
+}
+
+img.header {
+    display: inline-block;
+    max-height: 400px;
+    margin: 0 auto;
+}
+
+.findaride {
+    background-color: #41c1e8;
+    color: white;
+    padding: 60px;
+    margin: 60px;
+    border-radius: 20%;
+    vertical-align: center;
+
+}
+
+button a {
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    font-size: 1.5rem;
+    vertical-align: center;
+    border: none;
+
+
+}
+
+button a:hover {
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    font-size: 1.5rem;
+    vertical-align: center;
+    border: none;
+
+
+}
+
+.svg-inline--fas {
+    height: 1.75rem;
+    width: 1.75rem;
+
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #41c1e8;
+    border-color: #41c1e8
+}
+
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #3199e8;
+    border-color: #3199e8
+}

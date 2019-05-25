@@ -1,11 +1,35 @@
 {% extends 'index.html' %}
 
 {% load static %}
-{% load  %}
+
 
 {% block 'body' %}
-<h1>Carpooling</h1>
+    <div class="card-header" style="text-align: center">
+        <img class="header" src="{% static 'media/knowstartup-carpooling1.png' %}" alt="home-pic">
+    </div>
 
-    <img src="{% static 'media/knowstartup-carpooling1.jpg' %}"   alt="home-pic">
+    <div class="card-body" style="text-align: center">
 
+        <button class="btn btn-primary"><i class="fas fa-user-friends fa-2x"></i> <a
+                href="{% url 'carpool:all-offers' %}"> Find a ride</a>
+
+        </button>
+        <button class="btn btn-primary"><i class="fas fa-car fa-2x"></i> <a href="{% url 'carpool:create-offer' %}">
+            Offer a ride</a>
+
+        </button>
+
+    </div>
+
+    {% if not request.user.is_authenticated %}
+
+        <div class="card-body" style="text-align: center">
+
+            <button class="btn btn-primary"><i class="fas fa-user-plus fa-2x"></i> <a
+                    href="{% url 'accounts:signup' %}"> Create an account</a>
+            </button>
+
+        </div>
+
+    {% endif %}
 {% endblock %}

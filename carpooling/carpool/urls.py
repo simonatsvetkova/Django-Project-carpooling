@@ -2,6 +2,8 @@ from django.urls import path, re_path, include
 
 from . import views
 
+from accounts.views import SignUp
+
 app_name = 'carpool'
 
 urlpatterns = [
@@ -18,5 +20,6 @@ urlpatterns = [
     re_path('^requestdetails/(?P<pk>\d+)/$', views.RequestDetailView.as_view(), name='request-details'),
     re_path('^requestdelete/(?P<pk>\d+)/$', views.RequestDeleteView.as_view(), name='request-delete'),
     path('allrequests', views.AllRequestsView.as_view(), name='all-requests'),
-
+    # path('accounts/', include('django.contrib.auth.urls')),
+    # path('signup/', SignUp.as_view(), name='signup'),
 ]

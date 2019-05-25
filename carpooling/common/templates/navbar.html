@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom:2%">
-    <a class="navbar-brand" href="\gotoLanding"><img src="{% static 'media/carpool-logo.png' %}" alt="logo"
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'media/carpool-logo.png' %}" alt="logo"
                                                      style="height: 70px; width: 70px;"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,15 +22,14 @@
 
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Offers
-                </a>
+                <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Home</a>
+
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{% url 'carpool:all-offers' %}">All</a>
                     <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Create</a>
                     <a class="dropdown-item" href="{% url 'carpool:my-offers-list' %}">My offers</a>
-                    <a class="dropdown-item" href="">My requests</a>
+                    <a class="dropdown-item" href="{% url 'carpool:my-requests-list' %}">My requests</a>
 
                 </div>
             </li>

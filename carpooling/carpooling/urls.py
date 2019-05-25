@@ -28,10 +28,11 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    # path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     # path('common/', include('common.urls')),
     path('carpool/', include('carpool.urls')),
     path('', views.get_landing_page, name='home'),
+    path('', include('django.contrib.auth.urls')),
 
 ]
 
