@@ -148,6 +148,8 @@ class EditOfferForm(forms.ModelForm):
     passenger = forms.CharField(max_length=70, widget=forms.TextInput(attrs={
         'class': 'form-control'
     }))
+    car_picture = forms.ImageField(required=False, label='Upload image')
+
 
 
     class Meta:
