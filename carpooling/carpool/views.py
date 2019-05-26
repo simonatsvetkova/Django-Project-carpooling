@@ -175,7 +175,7 @@ class OfferEditView(LoginRequiredMixin, generic.UpdateView):
     #     print(f"object --> {obj}")
     #     print(f"created --> {created}")
     #     return obj
-
+'''
 
     def get(self, request, pk):
         if has_access_to_modify(self.request.user, self.get_object()):
@@ -199,7 +199,7 @@ class OfferEditView(LoginRequiredMixin, generic.UpdateView):
         return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
 
 
-
+'''
 
 
 

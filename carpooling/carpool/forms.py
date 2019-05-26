@@ -81,7 +81,7 @@ class CreateOfferForm(forms.ModelForm):
 
     class Meta:
         model = Offer
-        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity','type_of_contact', 'number_of_seats', 'passenger', 'terms_and_conditions']
+        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity','type_of_contact', 'number_of_seats', 'passenger', 'car_picture', 'terms_and_conditions']
         # exclude = ['user', ]
         # widgets = {
         #     'driver': settings.AUTH_USER_MODEL
@@ -154,7 +154,7 @@ class EditOfferForm(forms.ModelForm):
 
     class Meta:
         model = Offer
-        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity', 'number_of_seats', 'passenger', 'terms_and_conditions']
+        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity', 'number_of_seats', 'passenger', 'car_picture', 'terms_and_conditions']
         # exclude = ['user', ]
         # widgets = {
         #     'driver': settings.AUTH_USER_MODEL
