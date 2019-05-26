@@ -6,13 +6,13 @@ from .forms import *
 class SetUp_Class(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create(email="simonatsvetkova@gmail.com", password="Spring567", first_name="Simona", last_name='Tsvetkova', username='SimonaTsv')
+        self.user = User.objects.create(email="simonatsvetkova3@gmail.com", password="Spring567", first_name="Simona", last_name='Tsvetkova', username='SimonaTsv3')
 
 class User_Form_Test(TestCase):
 
     # Valid Form Data
     def test_UserForm_valid(self):
-        form = RegistrationForm(data={'email': "simonatsvetkova@gmail.com", 'password1': "Spring567", 'password2': 'Spring567', 'first_name': "Simona", 'last_name': 'Tsvetkova', 'username': 'SimonaTsv'})
+        form = RegistrationForm(data={'email': "test18@gmail.com", 'password1': "Spring567", 'password2': 'Spring567', 'first_name': "Simona", 'last_name': 'Tsvetkova', 'username': 'SimonaTsv3'})
         self.assertTrue(form.is_valid())
 
 

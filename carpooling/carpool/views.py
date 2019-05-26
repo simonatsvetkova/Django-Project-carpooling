@@ -1,15 +1,12 @@
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
-from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.views import generic
 
 from accounts.models import ProfileUser
-from .models import Offer, SeatRequest, SeatApprovalRejection
-from .forms import CreateOfferForm, RequestRideForm, EditOfferForm
+from .forms import CreateOfferForm, RequestRideForm
+from .models import Offer, SeatRequest
 
 
 # Create your views here.
@@ -29,7 +26,6 @@ def get_all_offers(request):
     return HttpResponse(url)
 
 
-# def create_offer(request):
 
 class CreateOfferView(LoginRequiredMixin, generic.CreateView):
     model = Offer
@@ -68,6 +64,7 @@ class MyOffersView(LoginRequiredMixin, generic.ListView):
     model = Offer
     template_name = 'my_offers.html'
     context_object_name = 'offers'
+    offers_count = Offer.objects.count()
 
     def get_queryset(self):
         profile_user = ProfileUser.objects.all().filter(user__pk=self.request.user.id).first()
@@ -85,7 +82,6 @@ class OfferDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OfferDetailView, self).get_context_data(**kwargs)
-        # context['reviews'] = Review.objects.all().filter(offer=self.get_object())
 
         if has_access_to_modify(self.request.user, self.get_object()):
             context['is_user_offer'] = True
@@ -123,35 +119,10 @@ class OfferDeleteView(LoginRequiredMixin, generic.DeleteView):
             return render(request, 'permission_denied.html')
         try:
             offer = Offer.objects.get(pk=pk)
-            # offer = self.get_object()
             offer.delete()
         except Exception as error:
             print(f"cant delete --> {error}")
         return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
-'''
-def edit_offer(request, pk):
-    offer = Offer.objects.get(id=pk)
-    print(f"offer --> {offer}")
-    print(f"offer id --> {offer.id}")
-    print(f"offer_ID --> {pk}")
-    start_location = offer.start_location
-    destination = offer.destionation
-    departure_time = offer.departure_time
-    return_time = offer.return_time
-    route = offer.route
-    regularity = offer.regularity
-    number_of_seats = offer.number_of_seats
-    passenger = offer.passenger
-    if request.method != 'POST':
-        form = EditOfferForm(instance=offer)
-    else:
-        form = EditOfferForm(instance=offer, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
-    context = {'offer': offer, 'start_location': start_location, 'destination': destination, 'departure_time': departure_time, 'return_time': return_time, 'route': route, 'regularity': regularity, 'number_of_seats': number_of_seats, 'passenger': passenger}
-    return render(request, 'edit_offer.html', context)
-'''
 
 
 
@@ -162,44 +133,12 @@ class OfferEditView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy('carpool:my-offers-list')
     context_object_name = 'offers'
 
-
-    def form_valid(self, form):
-        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
-        form.instance.user = user
-        return super().form_valid(form)
-
-    # def get_object(self, queryset=None):
-    #
-    #     # get the existing object or created a new one
-    #     obj, created = Offer.objects.get_or_create(col_1=self.kwargs['user'], col_2=self.kwargs['pk'])
-    #     print(f"object --> {obj}")
-    #     print(f"created --> {created}")
-    #     return obj
-'''
-
-    def get(self, request, pk):
-        if has_access_to_modify(self.request.user, self.get_object()):
-            instance = Offer.objects.get(pk=pk)
-            offer = CreateOfferForm(request.POST or None, request.FILES or None, instance=instance)
-            return render(request, 'edit_offer.html', {'offers': self.get_object()})
-            # getting error with the below row -- Reverse for 'offer-edit' with arguments '('',)' not found. 1 pattern(s) tried: ['carpool\\/edit/(?P<pk>\\d+)/$']
-            # return render(request, 'edit_offer.html', {'offers': offer})
-
+    def dispatch(self, request, *args, **kwargs):
+        handler = super(OfferEditView, self).dispatch(request, *args, **kwargs)
+        # Only allow editing if current user is owner
+        if str(self.object.user) == str(request.user) or request.user.is_superuser:
+            return handler
         return render(request, 'permission_denied.html')
-
-
-    def post(self, request, pk):
-        if not has_access_to_modify(self.request.user, self.get_object()):
-            return render(request, 'permission_denied.html')
-        try:
-            offer = Offer.objects.get(pk=pk)
-            offer.save()
-        except Exception as error:
-            print(f"cant edit --> {error}")
-        return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
-
-
-'''
 
 
 

@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block 'body' %}
+
+    {% load static %}
+
+    <h1>nothing yet</h1>
+
+
+    <div class="container" style="margin-top: 5%;">
+        <div class="row">
+            {% for item in faq %}
+                <div class="col-lg-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.question }}</h5>
+                            <p class="card-text">{{ item.answer }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

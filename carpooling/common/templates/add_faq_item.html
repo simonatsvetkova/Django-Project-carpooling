@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block 'body' %}
+
+    {% load static %}
+
+
+
+    {% if user.is_superuser %}
+        <h1>nothing yet</h1>
+        <div class="row">
+            <form style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%" method="post"
+                  action="{% url 'common:add-faq' %}">
+                <h2>Add FAQ</h2>
+                {% csrf_token %}
+                {{form.as_table}}
+                {{ form.question }}
+                {{ form.answer }}
+
+                <button class="btn btn-primary" type="submit">Post</button>
+
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+        </div>
+    {% else %}
+        <h1>You have no permissions!</h1>
+    {% endif %}
+
+{% endblock %}

@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom:2%">
     <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'media/carpool-logo.png' %}" alt="logo"
-                                                     style="height: 70px; width: 70px;"></a>
+                                                         style="height: 70px; width: 70px;"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -15,43 +15,51 @@
 
 
             {% if not request.user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                </li>
             {% else %}
 
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">Menu</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Menu</a>
 
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'carpool:all-offers' %}">All offers</a>
-                    <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Create offer</a>
-                    <a class="dropdown-item" href="{% url 'carpool:my-offers-list' %}">My offers</a>
-                    <a class="dropdown-item" href="{% url 'carpool:my-requests-list' %}">My requests</a>
-                    {% if user.is_superuser %}
-                    <a class="dropdown-item" href="{% url 'carpool:all-requests' %}">All requests</a>
-                    {% endif %}
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'carpool:all-offers' %}">All offers</a>
+                        <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Create offer</a>
+                        <a class="dropdown-item" href="{% url 'carpool:my-offers-list' %}">My offers</a>
+                        <a class="dropdown-item" href="{% url 'carpool:my-requests-list' %}">My requests</a>
+                        {% if user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'carpool:all-requests' %}">All requests</a>
+                        {% endif %}
 
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{user}}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    {% if user.is_superuser %}
-                    <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Add offer</a>
-                    {% endif %}
-                    <a class="dropdown-item" href="{% url 'accounts:user-profile' user.username  %}">Profile</a>
-                    <a class="dropdown-item" href="{% url 'accounts:logout' %}?next=/accounts/login/">Logout</a>
-                </div>
-            </li>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ user }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {% if user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Add offer</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{% url 'accounts:user-profile' user.username %}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}?next=/accounts/login/">Logout</a>
+                    </div>
+                </li>
 
             {% endif %}
-
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'faq' %}">FAQ </a>
+            </li>
+            {% if user.is_superuser %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'common:add-faq' %}">Add FAQ item </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
