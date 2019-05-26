@@ -6,5 +6,5 @@ from . import views
 app_name = 'common'
 
 urlpatterns = [
-    path('addfaqitem/', views.AddFAQView.as_view(), name='add-faq'),
+    # path('addfaqitem/', views.AddFAQView.as_view(), name='add-faq'),
 ]

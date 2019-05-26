@@ -4,11 +4,11 @@ from .models import FAQ
 
 
 class AddFAQForm(forms.ModelForm):
-    question = forms.CharField(max_length=255, required=True, widget=forms.Textarea(attrs={
+    question = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={
                                          'class': 'form-control'
                                      }))
 
-    answer = forms.CharField(max_length=1400, required=True, widget=forms.TextInput(
+    answer = forms.CharField(max_length=1400, required=True, widget=forms.Textarea(
         attrs={
             'class': 'form-control'
         }

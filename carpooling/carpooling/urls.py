@@ -32,8 +32,8 @@ urlpatterns = [
     path('common/', include('common.urls')),
     path('carpool/', include('carpool.urls')),
     path('', views.get_landing_page, name='home'),
-    path('FAQ/', views.get_faq_page, name='faq'),
-    # path('FAQ/additem/', views.AddFAQView.as_view(), name='add-faq'),
+    path('FAQ/', views.AllFAQView.as_view(), name='faq'),
+    path('FAQ/additem/', views.AddFAQView.as_view(), name='add-faq'),
     path('', include('django.contrib.auth.urls')),
 
 ]

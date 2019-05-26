@@ -52,12 +52,12 @@
                 </li>
 
             {% endif %}
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'faq' %}">FAQ </a>
             </li>
             {% if user.is_superuser %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'common:add-faq' %}">Add FAQ item </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add-faq' %}">Add FAQ item </a>
                 </li>
             {% endif %}
         </ul>
