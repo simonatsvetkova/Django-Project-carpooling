@@ -19,12 +19,13 @@ class ProfileUser(models.Model):
     def __str__(self):
         return f"{self.user}"
 
-# this saves the user in both groups User (the default Django group) and the ProfileUser group
-    @receiver(post_save, sender=User)
-    def create_or_update_user_profile(sender, instance, created, *args, **kwargs):
-        if not created:
-            return
-        ProfileUser.objects.create(user=instance)
+# this saves the user in from the default Django User and the custom ProfileUser. Doesn't save profile_picture
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, *args, **kwargs):
+    if not created:
+        return
+    profile = ProfileUser.objects.create(user=instance, first_name=instance.first_name, last_name=instance.last_name, email=instance.email)
+    print(profile)
 
 
-    post_save.connect(create_or_update_user_profile, sender=User)
+post_save.connect(create_or_update_user_profile, sender=User)

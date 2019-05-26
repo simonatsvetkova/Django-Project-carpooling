@@ -42,7 +42,7 @@
                     {% if user.is_superuser %}
                     <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Add offer</a>
                     {% endif %}
-                    <a class="dropdown-item" href="{% url 'accounts:user-profile' user.id%}">Profile</a>
+                    <a class="dropdown-item" href="{% url 'accounts:user-profile' user.username  %}">Profile</a>
                     <a class="dropdown-item" href="{% url 'accounts:logout' %}?next=/accounts/login/">Logout</a>
                 </div>
             </li>
