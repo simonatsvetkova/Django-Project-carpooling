@@ -157,18 +157,34 @@ def edit_offer(request, pk):
 
 class OfferEditView(LoginRequiredMixin, generic.UpdateView):
     model = Offer
-    form_class = EditOfferForm
+    form_class = CreateOfferForm
     template_name = 'edit_offer.html'
     success_url = reverse_lazy('carpool:my-offers-list')
     context_object_name = 'offer'
 
 
+    def form_valid(self, form):
+        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id)[0]
+        form.instance.user = user
+        return super().form_valid(form)
 
+    # def get_object(self, queryset=None):
+    #
+    #     # get the existing object or created a new one
+    #     obj, created = Offer.objects.get_or_create(col_1=self.kwargs['user'], col_2=self.kwargs['pk'])
+    #     print(f"object --> {obj}")
+    #     print(f"created --> {created}")
+    #     return obj
 
 
     def get(self, request, pk):
         if has_access_to_modify(self.request.user, self.get_object()):
+            instance = Offer.objects.get(pk=pk)
+            offer = CreateOfferForm(request.POST or None, instance=instance)
             return render(request, 'edit_offer.html', {'offers': self.get_object()})
+            # getting error with the below row -- Reverse for 'offer-edit' with arguments '('',)' not found. 1 pattern(s) tried: ['carpool\\/edit/(?P<pk>\\d+)/$']
+            # return render(request, 'edit_offer.html', {'offers': offer})
+
         return render(request, 'permission_denied.html')
 
 
