@@ -10,10 +10,11 @@
         {% for request in requests %}
         <div class="col-lg-4">
             <div class="card" style="width: 18rem;">
-                <img src="{{request.car_picture.url}}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">{{request.user}}</h5>
-                    <p class="card-text">{{request.start_location}}</p>
+                    <h5 class="card-title">{{request.driver}}</h5>
+                    <h5 class="card-title">{{request.ride_id}}</h5>
+
                     <a href="{% url 'carpool:request-details' request.id %}" class="btn btn-primary">Details</a>
                 </div>
             </div>

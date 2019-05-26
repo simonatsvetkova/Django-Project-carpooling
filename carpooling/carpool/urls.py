@@ -8,7 +8,7 @@ app_name = 'carpool'
 
 urlpatterns = [
     path('create/', views.CreateOfferView.as_view(), name='create-offer'),
-    path('alloffers', views.AllOffersView.as_view(), name='all-offers'),
+    path('alloffers/', views.AllOffersView.as_view(), name='all-offers'),
     path('myoffers/', views.MyOffersView.as_view(), name='my-offers-list'),
     re_path('^myoffers/(?P<pk>\d+)/$', views.MyOffersView.as_view(), name='my-offers'),
     re_path('^offerdetails/(?P<pk>\d+)/$', views.OfferDetailView.as_view(), name='offer-details'),
@@ -19,7 +19,7 @@ urlpatterns = [
     path('myrequests/', views.MyRequestsView.as_view(), name='my-requests-list'),
     re_path('^requestdetails/(?P<pk>\d+)/$', views.RequestDetailView.as_view(), name='request-details'),
     re_path('^requestdelete/(?P<pk>\d+)/$', views.RequestDeleteView.as_view(), name='request-delete'),
-    path('allrequests', views.AllRequestsView.as_view(), name='all-requests'),
+    path('allrequests/', views.AllRequestsView.as_view(), name='all-requests'),
     # path('accounts/', include('django.contrib.auth.urls')),
     # path('signup/', SignUp.as_view(), name='signup'),
 ]

@@ -1,14 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 
 from accounts.models import ProfileUser
 from .models import Offer, SeatRequest, SeatApprovalRejection
-from .forms import CreateOfferForm, RequestRideForm
+from .forms import CreateOfferForm, RequestRideForm, EditOfferForm
 
 
 # Create your views here.
@@ -127,25 +128,64 @@ class OfferDeleteView(LoginRequiredMixin, generic.DeleteView):
         except Exception as error:
             print(f"cant delete --> {error}")
         return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
+'''
+def edit_offer(request, pk):
+    offer = Offer.objects.get(id=pk)
+    print(f"offer --> {offer}")
+    print(f"offer id --> {offer.id}")
+    print(f"offer_ID --> {pk}")
+    start_location = offer.start_location
+    destination = offer.destionation
+    departure_time = offer.departure_time
+    return_time = offer.return_time
+    route = offer.route
+    regularity = offer.regularity
+    number_of_seats = offer.number_of_seats
+    passenger = offer.passenger
+    if request.method != 'POST':
+        form = EditOfferForm(instance=offer)
+    else:
+        form = EditOfferForm(instance=offer, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
+    context = {'offer': offer, 'start_location': start_location, 'destination': destination, 'departure_time': departure_time, 'return_time': return_time, 'route': route, 'regularity': regularity, 'number_of_seats': number_of_seats, 'passenger': passenger}
+    return render(request, 'edit_offer.html', context)
+'''
+
 
 
 class OfferEditView(LoginRequiredMixin, generic.UpdateView):
     model = Offer
-    form_class = CreateOfferForm
-    template_name = 'create_offer.html'
+    form_class = EditOfferForm
+    template_name = 'edit_offer.html'
     success_url = reverse_lazy('carpool:my-offers-list')
+    context_object_name = 'offer'
 
-    def form_valid(self, form):
-        user = ProfileUser.objects.all().filter(user__pk=self.request.user.id).first()
-        form.instance.user = user
-        return super().form_valid(form)
+
+
+
 
     def get(self, request, pk):
+        if has_access_to_modify(self.request.user, self.get_object()):
+            return render(request, 'edit_offer.html', {'offers': self.get_object()})
+        return render(request, 'permission_denied.html')
+
+
+    def post(self, request, pk):
         if not has_access_to_modify(self.request.user, self.get_object()):
             return render(request, 'permission_denied.html')
-        instance = Offer.objects.get(pk=pk)
-        form = CreateOfferForm(request.POST or None, instance=instance)
-        return render(request, 'create_offer.html', {'form': form})
+        try:
+            offer = Offer.objects.get(pk=pk)
+            # offer = self.get_object()
+            offer.save()
+        except Exception as error:
+            print(f"cant edit --> {error}")
+        return HttpResponseRedirect(reverse_lazy('carpool:my-offers-list'))
+
+
+
+
 
 
 class RequestRideView(LoginRequiredMixin, generic.CreateView):
@@ -163,6 +203,8 @@ class RequestRideView(LoginRequiredMixin, generic.CreateView):
             ride_request.save()
             return HttpResponseRedirect(reverse_lazy('carpool:my-requests-list'))
         return render(request, 'request_ride.html', {'form': form})
+
+
 
 
 

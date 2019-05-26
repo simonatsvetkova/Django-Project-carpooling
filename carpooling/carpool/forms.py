@@ -107,6 +107,69 @@ class CreateOfferForm(forms.ModelForm):
         obj.save()
         return super().form_valid(form)
 
+class EditOfferForm(forms.ModelForm):
+    select_regularity = Offer.REGULARITY
+    select_districts = Offer.DISTRICTS
+    select_seats = Offer.NUMBER_OF_SEATS
+    select_contact = Offer.TYPE_OF_CONTACT
+
+    start_location = forms.ChoiceField(choices=select_districts,
+                                       widget=forms.Select(
+                                           attrs={
+                                               'class': 'form-control'
+                                           }
+                                       ))
+    destination = forms.CharField(max_length=30, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    departure_time = forms.TimeField(required=True, widget=forms.TimeInput(
+        attrs={
+            'class': 'form-control'
+        }
+    ))
+    return_time = forms.TimeField(required=True, widget=forms.TimeInput(attrs={
+        'class': 'form-control'
+    }
+    ))
+    route = forms.CharField(max_length=400, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    regularity = forms.MultipleChoiceField(choices=select_regularity, widget=forms.SelectMultiple(
+        attrs={
+            'class': 'form-control'
+        }
+    ))
+    number_of_seats = forms.ChoiceField(choices=select_seats,
+                                        widget=forms.Select(
+                                            attrs={
+                                                'class': 'form-control'
+                                            }
+                                        ))
+    passenger = forms.CharField(max_length=70, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+
+
+    class Meta:
+        model = Offer
+        fields = ['start_location', 'destination', 'departure_time', 'return_time', 'route', 'regularity', 'number_of_seats', 'passenger', 'terms_and_conditions']
+        # exclude = ['user', ]
+        # widgets = {
+        #     'driver': settings.AUTH_USER_MODEL
+        # }
+
+    #
+    def __init__(self, *args, **kwargs):
+        super(EditOfferForm, self).__init__(*args, **kwargs)
+        self.fields['regularity'].widget = forms.CheckboxSelectMultiple(choices=Offer.REGULARITY)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
+        return super().form_valid(form)
+
+
 
 class RequestRideForm(forms.ModelForm):
 
@@ -114,10 +177,10 @@ class RequestRideForm(forms.ModelForm):
                                      widget=forms.Select(attrs={
                                          'class': 'form-control'
                                      }))
-    driver = forms.ModelChoiceField(queryset=Offer.objects.all(),
-                                     widget=forms.Select(attrs={
-                                         'class': 'form-control'
-                                     }))
+    # driver = forms.ModelChoiceField(queryset=Offer.objects.all(),
+    #                                  widget=forms.Select(attrs={
+    #                                      'class': 'form-control'
+    #                                  }))
     comments = forms.CharField(max_length=400, required=False, widget=forms.TextInput(
         attrs={
             'class': 'form-control'
@@ -127,11 +190,11 @@ class RequestRideForm(forms.ModelForm):
 
     class Meta:
         model = SeatRequest
-        fields = ['ride_id', 'driver', 'comments', 'terms_and_conditions']
+        fields = ['ride_id', 'comments', 'terms_and_conditions']
         exclude = ['passenger']
 
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['ride_id'].queryset = Offer.objects.none()
-
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     # self.fields['ride_id'].queryset = Offer.objects.none()
+    #

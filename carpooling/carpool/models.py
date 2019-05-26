@@ -84,15 +84,15 @@ class Offer(models.Model):
 
 class SeatRequest(models.Model):
     user = models.ForeignKey(ProfileUser, on_delete=models.CASCADE, unique=False)
-    # offer = models.ForeignKey(Offer, on_delete=models.CASCADE, default=1, unique=False)
     passenger = models.CharField(max_length=70, blank=False, null=False, default='full_name')
-    ride_id = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='pk', unique=False, default=1)
-    driver = MultiSelectField(max_choices=1, default=f'{user}', blank=False, null=False)  # check if you can make it to auto-populate once a ride_id is selected
+    ride_id = models.CharField(max_length=700, blank=False, default='null') # check if you can link it to Offer.pk in the form and make it a
+    # drop-down menu
+    drivers_name = models.CharField(max_length=70, default='full_name', blank=False, null=False)  # check if you can make it to auto-populate once a ride_id is selected
     comments = models.TextField(max_length=400, blank=True)
     terms_and_conditions = models.BooleanField(default=False, blank=False)
 
     def __str__(self):
-        return f"Request from {self.passenger}"
+        return f"Request from {self.user}"
 
 
 class SeatApprovalRejection(models.Model):

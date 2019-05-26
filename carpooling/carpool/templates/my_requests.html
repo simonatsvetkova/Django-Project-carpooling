@@ -11,6 +11,7 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{r.driver}}</h5>
+                    <h5 class="card-title">{{r.ride_id}}</h5>
 
                     <a href="{% url 'carpool:request-details' r.pk %}" class="btn btn-primary">Details</a>
                 </div>

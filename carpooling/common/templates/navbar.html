@@ -23,13 +23,16 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">Home</a>
+                   aria-haspopup="true" aria-expanded="false">Menu</a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'carpool:all-offers' %}">All</a>
-                    <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Create</a>
+                    <a class="dropdown-item" href="{% url 'carpool:all-offers' %}">All offers</a>
+                    <a class="dropdown-item" href="{% url 'carpool:create-offer' %}">Create offer</a>
                     <a class="dropdown-item" href="{% url 'carpool:my-offers-list' %}">My offers</a>
                     <a class="dropdown-item" href="{% url 'carpool:my-requests-list' %}">My requests</a>
+                    {% if user.is_superuser %}
+                    <a class="dropdown-item" href="{% url 'carpool:all-requests' %}">All requests</a>
+                    {% endif %}
 
                 </div>
             </li>
