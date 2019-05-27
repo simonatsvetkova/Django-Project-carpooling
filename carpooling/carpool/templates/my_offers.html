@@ -7,7 +7,7 @@
     <div class="container" style="margin-top: 5%;">
         <div class="row">
 
-            {% if offers_count == 0 %}
+            {% if not offers %}
                 <h1>No offers yet. <a href="{% url 'carpool:create-offer' %}">Create one?</a></h1>
             {% endif %}
 
