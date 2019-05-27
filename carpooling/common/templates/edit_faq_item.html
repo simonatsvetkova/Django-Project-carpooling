@@ -8,23 +8,16 @@
 
     {% if user.is_superuser %}
         <div class="container" style="margin-top: 5%;>
-        <div class="row">
-            <div class="col-lg-3"></div>
-            <form style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%" method="post"
-                  action="{% url 'add-faq' %}">
-                <h2>Edit FAQ</h2>
-                {% csrf_token %}
-                {{ form.as_p }}
-
-                <button class="btn btn-primary" type="submit">Update</button>
-
-            </form>
+        <div class=" row">
+        <div class="col-lg-3"></div>
+        <form style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%" method="post" action="{% url 'edit-faq' faqs.id %}">
+            <h2>Edit FAQ</h2>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">Update</button>
+        </form>
         </div>
         <div class="col-lg-3"></div>
-        </div>
-        </div>
-    {% else %}
-        <h1 class="alert alert-danger">You have no permissions!</h1>
     {% endif %}
 
 {% endblock %}

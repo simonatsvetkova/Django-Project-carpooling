@@ -18,14 +18,14 @@ class AddFAQForm(forms.ModelForm):
         model = FAQ
         fields = ['question', 'answer']
 
-    # def __init__(self, *args, **kwargs):
-    #     super(AddFAQForm, self).__init__(*args, **kwargs)
-    #
-    #
-    # def form_valid(self, form):
-    #     obj = form.save(commit=False)
-    #     obj.owner = self.request.user
-    #     obj.save()
-    #     return super().form_valid(form)
-    #
+    def __init__(self, *args, **kwargs):
+        super(AddFAQForm, self).__init__(*args, **kwargs)
+
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
+        return super().form_valid(form)
+
 

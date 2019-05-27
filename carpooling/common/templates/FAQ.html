@@ -11,6 +11,7 @@
             </div>
         </div>
         <p></p>
+    <div class="panel-group" id="accordion">
         {% for faq in faqs %}
 
             <div class="container">
@@ -22,17 +23,14 @@
                             <div class="card">
                                 <div class="card-header" id="accordion-tab-1-heading-1">
                                     <h5>
-                                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                data-target="#accordion-tab-1-content-1" aria-expanded="false"
-                                                aria-controls="accordion-tab-1-content-1">{{ faq.question }}</button>
+                                        <button class="btn btn-link" type="button"  data-target="#accordion-tab-1-content-1" aria-expanded="false" aria-controls="accordion-tab-1-content-1">{{ faq.question }}</button>
                                     </h5>
                                     {% if user.is_superuser %}
-                                        <a href="{% url 'edit-faq' faq.id %}" class="btn btn-success">Edit</a>
-                                        <a href="{% url 'delete-faq' faq.id %}" class="btn btn-danger">Delete</a>
+                                        <a href="{% url 'edit-faq' faq.id %}" class="btn btn-success faq">Edit</a>
+                                        <a href="{% url 'delete-faq' faq.id %}" class="btn btn-danger faq">Delete</a>
                                     {% endif %}
                                 </div>
-                                <div class="collapse show" id="accordion-tab-1-content-1"
-                                     aria-labelledby="accordion-tab-1-heading-1" data-parent="#accordion-tab-1">
+                                <div class="collapse show" id="accordion-tab-1-content-1" aria-labelledby="accordion-tab-1-heading-1" data-parent="#accordion-tab-1">
                                     <div class="card-body">
                                         <p>{{ faq.answer }}</p>
                                     </div>
@@ -44,6 +42,6 @@
                 </div>
             </div>
         {% endfor %}
-
+        </div>
 
 {% endblock %}

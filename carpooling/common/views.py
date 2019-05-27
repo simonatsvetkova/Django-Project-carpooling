@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views import generic
 
-from accounts.models import ProfileUser
+
 from .models import FAQ
 from .forms import AddFAQForm
 
@@ -59,12 +59,12 @@ class AllFAQView(generic.ListView):
 
 
 
-class EditFAQView(LoginRequiredMixin, generic.CreateView):
+class EditFAQView(LoginRequiredMixin, generic.UpdateView):
     model = FAQ
     form_class = AddFAQForm
+    template_name = 'edit_faq_item.html'
     success_url = reverse_lazy('faq')
-    template_name = 'add_faq_item.html'
-    context_object_name = 'faq'
+    context_object_name = 'faqs'
 
     def dispatch(self, request, *args, **kwargs):
         handler = super(EditFAQView, self).dispatch(request, *args, **kwargs)
@@ -72,24 +72,6 @@ class EditFAQView(LoginRequiredMixin, generic.CreateView):
         if request.user.is_superuser:
             return handler
         return render(request, 'permission_denied.html')
-
-    #
-    # def get(self, request, pk):
-    #     if has_access_to_add_or_modify(self.request.user):
-    #         return render(request, 'add_faq_item.html', {'faqs': self.get_object()})
-    #     return render(request, 'permission_denied.html')
-    #
-    #
-    # def post(self, request, *args, **kwargs):
-    #     form = AddFAQForm(request.POST)
-    #     if not has_access_to_add_or_modify(self.request.user):
-    #         return render(request, 'permission_denied.html')
-    #     faq = form.save(commit=False)
-    #     faq.question = form.cleaned_data['question']
-    #     faq.answer = form.cleaned_data['answer']
-    #     faq.save()
-    #     return HttpResponseRedirect(reverse_lazy('faq'))
-    #
 
 
 

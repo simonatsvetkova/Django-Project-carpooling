@@ -162,6 +162,28 @@ h1.alert-danger {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-a.btn-success, a.btn-danger {
-
+.faq {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    /*border-top-color: transparent;*/
+    /*border-right-color: transparent;*/
+    /*border-bottom-color: transparent;*/
+    /*border-left-color: transparent;*/
+    padding: 2px 8px;
+    font-size: 14px;
+    line-height: 1.2;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
