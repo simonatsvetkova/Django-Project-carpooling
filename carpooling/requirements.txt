@@ -4,7 +4,7 @@ django-crispy-forms==1.7.2
 django-heroku==0.3.1
 django-multiselectfield==0.1.8
 django-rest-auth==0.9.5
-djangorestframework==3.9.3
+djangorestframework==3.11.2
 gunicorn==19.9.0
 Pillow==6.0.0
 pkg-resources==0.0.0
